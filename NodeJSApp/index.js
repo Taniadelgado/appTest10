@@ -29,11 +29,45 @@ mysqlConnection.connect((err) => {
 app.listen(3000,()=>console.log('Express server is running at port: 3000:::'));
 
 //9. READ all users  in data base 
-app.get('/list_users',(req,res) => {
+app.get('/users',(req,res) => {
     mysqlConnection.query('SELECT * FROM users',(err, rows, fields)=>{
         if (!err){
             console.log(rows);
             res.send(rows);
+        }else{
+            console.log(err);
+        }
+    })
+});
+//10. READ an users  in data base 
+app.get('/users/:id',(req,res) => {
+    mysqlConnection.query('SELECT * FROM users WHERE id = ?',[req.params.id],(err, rows, fields)=>{
+        if (!err){
+            console.log(rows);
+            res.send(rows);
+        }else{
+            console.log(err);
+        }
+    })
+});
+//11. DELETE an users  in data base 
+app.delete('/users/:id',(req,res) => {
+    mysqlConnection.query('DELETE FROM users WHERE id = ?',[req.params.id],(err, rows, fields)=>{
+        if (!err){
+            console.log('User has been deleted');
+            res.send('User has been deleted');
+        }else{
+            console.log(err);
+        }
+    })
+});
+//12. REGISTER a new users  in data base 
+app.post('/users',(req,res) => {
+    mysqlConnection.query('INSERT INTO users (firstname, lastname,'+
+        'phone, email ) VALUES (?,?,?,?)',[req.params.id],(err, rows, fields)=>{
+        if (!err){
+            console.log('A new user has been created');
+            res.send('A new user has been deleted');
         }else{
             console.log(err);
         }
